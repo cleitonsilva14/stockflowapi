@@ -1,11 +1,11 @@
 package br.com.stockflowapi.service;
 
 import br.com.stockflowapi.dto.ProductDto;
+import br.com.stockflowapi.exception.custom.EntityNotFoundException;
 import br.com.stockflowapi.mapper.ProductMapper;
 import br.com.stockflowapi.model.Product;
 import br.com.stockflowapi.projection.ProductCodeProjection;
 import br.com.stockflowapi.repository.ProductRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
