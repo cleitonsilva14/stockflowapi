@@ -9,5 +9,7 @@ public record ErrorMessage(
     LocalDateTime timestamp,
     Integer code,
     String status,
-    String message
+    String message,
+    String method,
+    String requestURI
 ) { }

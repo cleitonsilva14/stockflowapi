@@ -23,6 +23,8 @@ public class ApiExceptionHandler {
                         .timestamp(LocalDateTime.now())
                         .code(HttpStatus.NOT_FOUND.value())
                         .status(HttpStatus.NOT_FOUND.name())
+                        .method(request.getMethod())
+                        .requestURI(request.getRequestURI())
                         .message(exception.getMessage())
                         .build());
     }
