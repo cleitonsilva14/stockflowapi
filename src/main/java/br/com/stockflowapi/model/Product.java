@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -31,6 +30,11 @@ public class Product {
 
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
+
+
+    @ElementCollection
+    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+    private List<String> images = new ArrayList<>();
 
     @PrePersist
     private void prePersist(){

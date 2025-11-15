@@ -30,6 +30,8 @@ public class ProductService {
     public ProductDto save(ProductDto productDto) {
         Product product = productMapper.toEntity(productDto);
 
+        log.info("{}", product.getImages());
+
         try {
             productRepository.save(product);
             return productMapper.toDto(product);

@@ -22,6 +22,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductDto productDto){
+        log.info("{}", productDto.images());
         return ResponseEntity.ok().body(productService.save(productDto));
     }
 
