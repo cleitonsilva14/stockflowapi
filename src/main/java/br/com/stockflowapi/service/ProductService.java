@@ -86,14 +86,16 @@ public class ProductService {
     public ProductDto update(Long code, ProductDto productDto) {
         Product product = productRepository.findByCode(code).orElseThrow(() -> new EntityNotFoundException("Product code %d not found!".formatted(code)));
 
-        log.info("\n\n{}", product.toString());
+        //log.info("\n\n{}", product.toString());
+        //log.info("--->>>>>>>>{}", productDto.images());
 
         product.setCode(product.getCode());
         product.setName(productDto.name());
         product.setDescription(productDto.description());
         product.setPrice(productDto.price());
+        product.setImages(productDto.images());
 
-        log.info("\n\n{}", product.toString());
+        //log.info("\n\n{}", product.toString());
 
         return productMapper.toDto(productRepository.save(product));
     }

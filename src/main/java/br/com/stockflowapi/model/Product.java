@@ -32,7 +32,7 @@ public class Product {
     private BigDecimal price;
 
 
-    @ElementCollection
+    @ElementCollection//(fetch = FetchType.EAGER)
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     private List<String> images = new ArrayList<>();
 
