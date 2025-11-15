@@ -2,6 +2,7 @@ package br.com.stockflowapi.service;
 
 import br.com.stockflowapi.dto.ProductDto;
 import br.com.stockflowapi.exception.custom.EntityNotFoundException;
+import br.com.stockflowapi.exception.custom.ProductCodeUniqueViolation;
 import br.com.stockflowapi.mapper.ProductMapper;
 import br.com.stockflowapi.model.Product;
 import br.com.stockflowapi.projection.ProductCodeProjection;
@@ -28,8 +29,14 @@ public class ProductService {
     @Transactional
     public ProductDto save(ProductDto productDto) {
         Product product = productMapper.toEntity(productDto);
-        productRepository.save(product);
-        return productMapper.toDto(product);
+
+        try {
+            productRepository.save(product);
+            return productMapper.toDto(product);
+        }catch (ProductCodeUniqueViolation exception){
+            throw new ProductCodeUniqueViolation("Product code %d already exists!".formatted(product.getCode()));
+        }
+
     }
 
     @Transactional(readOnly = true)

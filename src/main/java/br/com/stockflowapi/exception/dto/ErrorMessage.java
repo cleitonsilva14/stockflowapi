@@ -1,5 +1,7 @@
 package br.com.stockflowapi.exception.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,7 +18,7 @@ public record ErrorMessage(
         String message,
         String method,
         String requestURI,
-        Map<String, String> errors
+        @JsonInclude(JsonInclude.Include.NON_NULL) Map<String, String> errors
 ) {
 
     public ErrorMessage addErrors(BindingResult bindingResult) {

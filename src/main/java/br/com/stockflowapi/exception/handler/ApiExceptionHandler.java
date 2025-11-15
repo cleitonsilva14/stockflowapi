@@ -1,8 +1,10 @@
 package br.com.stockflowapi.exception.handler;
 
 import br.com.stockflowapi.exception.custom.EntityNotFoundException;
+import br.com.stockflowapi.exception.custom.ProductCodeUniqueViolation;
 import br.com.stockflowapi.exception.dto.ErrorMessage;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,6 +49,22 @@ public class ApiExceptionHandler {
                         .timestamp(LocalDateTime.now())
                         .code(NOT_FOUND.value())
                         .status(NOT_FOUND.name())
+                        .method(request.getMethod())
+                        .requestURI(request.getRequestURI())
+                        .message(exception.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorMessage> productCodeUniqueViolation(DataIntegrityViolationException exception,
+                                                                   HttpServletRequest request){
+        return ResponseEntity
+                .status(UNPROCESSABLE_ENTITY)
+                .contentType(APPLICATION_JSON)
+                .body(ErrorMessage.builder()
+                        .timestamp(LocalDateTime.now())
+                        .code(UNPROCESSABLE_ENTITY.value())
+                        .status(UNPROCESSABLE_ENTITY.name())
                         .method(request.getMethod())
                         .requestURI(request.getRequestURI())
                         .message(exception.getMessage())
