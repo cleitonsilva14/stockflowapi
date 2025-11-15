@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -60,10 +61,19 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.update(code, productDto));
     }
 
+    @PatchMapping("/code/{code}")
+    public ResponseEntity<ProductDto> updateImages(@PathVariable Long code, @RequestBody List<String> newImages){
+        return ResponseEntity.ok().body(productService.updateImages(code, newImages));
+    }
+
     @DeleteMapping("/{code}")
     public ResponseEntity<Void> delete(@PathVariable Long code){
         productService.delete(code);
         return ResponseEntity.noContent().build();
     }
+
+
+
+
 
 }
