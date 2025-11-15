@@ -95,4 +95,13 @@ public class ProductService {
 
         return productMapper.toDto(productRepository.save(product));
     }
+
+    public void delete(Long code) {
+        Product product = productRepository.findByCode(code)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Product with code %d not found!".formatted(code)
+                ));
+
+        productRepository.delete(product);
+    }
 }

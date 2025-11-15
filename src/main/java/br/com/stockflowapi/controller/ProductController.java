@@ -59,6 +59,11 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.update(code, productDto));
     }
 
+    @DeleteMapping("/{code}")
+    public ResponseEntity<Void> delete(@PathVariable Long code){
+        productService.delete(code);
+        return ResponseEntity.noContent().build();
+    }
 
 
 
