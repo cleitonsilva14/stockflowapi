@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException exception, HttpServletRequest request){
+    public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException exception,
+                                                                HttpServletRequest request){
         return ResponseEntity
                 .status(NOT_FOUND)
                 .contentType(APPLICATION_JSON)
