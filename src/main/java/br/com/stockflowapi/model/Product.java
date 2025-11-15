@@ -39,4 +39,14 @@ public class Product {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "uuid=" + uuid +
+                ", code=" + code +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

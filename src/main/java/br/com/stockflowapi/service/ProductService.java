@@ -73,4 +73,19 @@ public class ProductService {
         List<Product> productSaved = productRepository.saveAll(products);
         return productSaved.stream().map(productMapper::toDto).toList();
     }
+
+    public ProductDto update(Long code, ProductDto productDto) {
+        Product product = productRepository.findByCode(code).orElseThrow(() -> new EntityNotFoundException("Product code %d not found!".formatted(code)));
+
+        log.info("\n\n{}", product.toString());
+
+        product.setCode(product.getCode());
+        product.setName(productDto.name());
+        product.setDescription(productDto.description());
+        product.setPrice(productDto.price());
+
+        log.info("\n\n{}", product.toString());
+
+        return productMapper.toDto(productRepository.save(product));
+    }
 }

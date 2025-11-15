@@ -22,46 +22,42 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductDto productDto){
-        return ResponseEntity.ok()
-                .body(productService.save(productDto));
+        return ResponseEntity.ok().body(productService.save(productDto));
     }
 
     @PostMapping("/batch")
     public ResponseEntity<List<ProductDto>> saveAll(@Valid @RequestBody List<ProductDto> products){
-        return ResponseEntity.ok()
-                .body(productService.saveAll(products));
+        return ResponseEntity.ok().body(productService.saveAll(products));
     }
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> findAll(){
-        return ResponseEntity.ok()
-                .body(productService.findAll());
+        return ResponseEntity.ok().body(productService.findAll());
     }
 
     @GetMapping("/code/{code}")
     public ResponseEntity<ProductDto> findByCode(@PathVariable(name = "code") Long code){
-        return ResponseEntity
-                .ok()
-                .body(productService.findByCode(code));
+        return ResponseEntity.ok().body(productService.findByCode(code));
     }
 
     // @GetMapping("/{code:\\d+}")
     @GetMapping("/code")
     public ResponseEntity<List<ProductCodeProjection>> getCode(){
-        return ResponseEntity
-                .ok()
-                .body(productService.findAllCodes());
+        return ResponseEntity.ok().body(productService.findAllCodes());
     }
 
     // @GetMapping("/{uuid:[0-9a-fA-F\\-]{36}}")
     @GetMapping("/uuid/{uuid}")
     public ResponseEntity<ProductDto> findByUUID(@PathVariable(name = "uuid") UUID uuid){
-        return ResponseEntity.ok()
-                .body(productService.findByUUID(uuid));
+        return ResponseEntity.ok().body(productService.findByUUID(uuid));
     }
 
 
-
+    @PutMapping("/code/{code}")
+    public ResponseEntity<ProductDto>  update(@PathVariable Long code, @Valid @RequestBody ProductDto productDto){
+        //productService.update(code, productDto);
+        return ResponseEntity.ok().body(productService.update(code, productDto));
+    }
 
 
 
