@@ -30,8 +30,6 @@ public class ProductService {
     public ProductDto save(ProductDto productDto) {
         Product product = productMapper.toEntity(productDto);
 
-        log.info("{}", product.getImages());
-
         try {
             productRepository.save(product);
             return productMapper.toDto(product);
@@ -80,14 +78,15 @@ public class ProductService {
                 .collect(Collectors.toList());
 
         List<Product> productSaved = productRepository.saveAll(products);
-        return productSaved.stream().map(productMapper::toDto).toList();
+        return productSaved
+                .stream()
+                .map(productMapper::toDto).toList();
     }
 
     public ProductDto update(Long code, ProductDto productDto) {
-        Product product = productRepository.findByCode(code).orElseThrow(() -> new EntityNotFoundException("Product code %d not found!".formatted(code)));
-
-        //log.info("\n\n{}", product.toString());
-        //log.info("--->>>>>>>>{}", productDto.images());
+        Product product = productRepository
+                .findByCode(code)
+                .orElseThrow(() -> new EntityNotFoundException("Product code %d not found!".formatted(code)));
 
         product.setCode(product.getCode());
         product.setName(productDto.name());
@@ -95,17 +94,14 @@ public class ProductService {
         product.setPrice(productDto.price());
         product.setImages(productDto.images());
 
-        //log.info("\n\n{}", product.toString());
 
         return productMapper.toDto(productRepository.save(product));
     }
 
     public void delete(Long code) {
-        Product product = productRepository.findByCode(code)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Product with code %d not found!".formatted(code)
-                ));
-
+        Product product = productRepository
+                .findByCode(code)
+                .orElseThrow(() -> new EntityNotFoundException("Product with code %d not found!".formatted(code)));
         productRepository.delete(product);
     }
 

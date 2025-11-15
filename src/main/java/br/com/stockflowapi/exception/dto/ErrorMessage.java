@@ -1,6 +1,5 @@
 package br.com.stockflowapi.exception.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import org.springframework.validation.BindingResult;
@@ -31,9 +30,7 @@ public record ErrorMessage(
             newErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
-        return this.toBuilder()
-                .errors(newErrors)
-                .build();
+        return this.toBuilder().errors(newErrors).build();
     }
 
 }
