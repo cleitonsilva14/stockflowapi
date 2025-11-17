@@ -1,6 +1,7 @@
 package br.com.stockflowapi.mapper;
 
 import br.com.stockflowapi.dto.CategoryDto;
+import br.com.stockflowapi.dto.CategoryRequestDto;
 import br.com.stockflowapi.model.Category;
 import org.mapstruct.Mapper;
 
@@ -8,4 +9,7 @@ import org.mapstruct.Mapper;
 public interface CategoryMapper {
     CategoryDto toDto(Category category);
     Category toEntity(CategoryDto categoryDto);
+
+    CategoryDto toDto(CategoryRequestDto categoryRequestDto);
+
 }
