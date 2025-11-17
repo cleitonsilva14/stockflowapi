@@ -4,8 +4,10 @@ import br.com.stockflowapi.dto.ProductDto;
 import br.com.stockflowapi.exception.custom.EntityNotFoundException;
 import br.com.stockflowapi.exception.custom.ProductCodeUniqueViolation;
 import br.com.stockflowapi.mapper.ProductMapper;
+import br.com.stockflowapi.model.Category;
 import br.com.stockflowapi.model.Product;
 import br.com.stockflowapi.projection.ProductCodeProjection;
+import br.com.stockflowapi.repository.CategoryRepository;
 import br.com.stockflowapi.repository.ProductRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +26,19 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
 
 
     @Transactional
     public ProductDto save(ProductDto productDto) {
         Product product = productMapper.toEntity(productDto);
+
+        Category category = categoryRepository
+                .findById(productDto.categoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category id: %d not found!".formatted(productDto.categoryId())));
+
+        product.setCategory(category);
 
         try {
             productRepository.save(product);

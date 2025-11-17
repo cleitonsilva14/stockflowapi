@@ -6,6 +6,6 @@ import lombok.Builder;
 
 @Builder
 public record CategoryRequestDto(
-        @NotBlank @Schema(example = "HARDWARE") String name
+        @NotBlank @Schema(example = "CATEGORY_NAME") String name
 ) {
 }

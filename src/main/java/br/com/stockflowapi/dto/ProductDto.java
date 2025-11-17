@@ -12,12 +12,12 @@ import java.util.List;
 
 @Builder
 public record ProductDto(
-        @NotNull @Schema(example = "1000") Long code,
+        @NotNull @Schema(example = "10000") Long code,
         @NotBlank @Schema(example = "SSD 1TB") String name,
         @NotBlank @Schema(example = "Product description") String description,
         @DecimalMin("0.01") @Schema(example = "499.99") BigDecimal price,
         @ArraySchema(schema = @Schema(example = "https://storage.com/image1.jpg")) List<String> images,
-        Long categoryId
+        @NotBlank @Schema(example = "1") Long categoryId
 
 ) {
 }
