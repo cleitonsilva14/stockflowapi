@@ -3,6 +3,8 @@ package br.com.stockflowapi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +23,13 @@ public class Category {
 
     @Column(name = "name", nullable = false, length = 45, unique = true)
     private String name;
+
+    @OneToMany(
+            mappedBy = "category",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Product> products = new ArrayList<>();
 
     @PrePersist
     @PreUpdate

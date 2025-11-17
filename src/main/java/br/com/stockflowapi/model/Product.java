@@ -36,6 +36,15 @@ public class Product {
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     private List<String> images = new ArrayList<>();
 
+
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(
+            name = "category_id"
+    )
+    private Category category;
+
     @PrePersist
     private void prePersist(){
         if(Objects.isNull(price)){
