@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -67,9 +68,13 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDto findByCode(Long code) {
-        Product product = productRepository
-                .findByCode(code)
+
+        Product product = productRepository.findByCode(code)
+//                .findByCodeAndCategory(code)
                 .orElseThrow(() -> new EntityNotFoundException("Product code %d not found!".formatted(code)));
+
+        log.info(product.getCategory().getName());
+
         return productMapper.toDto(product);
 
     }

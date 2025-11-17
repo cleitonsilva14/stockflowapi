@@ -2,6 +2,7 @@ package br.com.stockflowapi.repository;
 
 import br.com.stockflowapi.model.Product;
 import br.com.stockflowapi.projection.ProductCodeProjection;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,8 +15,13 @@ import java.util.UUID;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID> {
 
-    Optional<Product> findByCode(Long code);
-
+    //Optional<Product> findByCode(Long code);
     @Query("SELECT p.code AS code FROM Product p")
     List<ProductCodeProjection> findAllCode();
+
+    //@Query("SELECT p FROM Product p JOIN FETCH p.category WHERE p.code = :code")
+    @EntityGraph(attributePaths = "category")
+    Optional<Product> findByCode(Long code);
+//    Optional<Product> findByCodeAndCategory(Long code);
+
 }
