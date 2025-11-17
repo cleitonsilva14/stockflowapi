@@ -16,12 +16,14 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     //Optional<Product> findByCode(Long code);
-    @Query("SELECT p.code AS code FROM Product p")
-    List<ProductCodeProjection> findAllCode();
 
     //@Query("SELECT p FROM Product p JOIN FETCH p.category WHERE p.code = :code")
     @EntityGraph(attributePaths = "category")
     Optional<Product> findByCode(Long code);
-//    Optional<Product> findByCodeAndCategory(Long code);
+    
+    @Query("SELECT p.code AS code FROM Product p")
+    List<ProductCodeProjection> findAllCode();
+
+
 
 }
