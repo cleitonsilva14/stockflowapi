@@ -114,12 +114,9 @@ public class ProductService {
                 .findByCode(code)
                 .orElseThrow(() -> new EntityNotFoundException("Product with code %d not found!".formatted(code)));
 
-        product.setName(product.getName());
-        product.setDescription(product.getDescription());
-        product.setPrice(product.getPrice());
         product.setImages(newImages);
 
-        return productMapper.toDto(productRepository.save(product));
+        return productMapper.toDto(product);
 
     }
 
@@ -129,8 +126,8 @@ public class ProductService {
                 .findByCode(code)
                 .orElseThrow(() -> new EntityNotFoundException("Product with code %d not found!".formatted(code)));
 
-        product.setImages(new ArrayList<>());
+        product.getImages().clear();
 
-        return productMapper.toDto(productRepository.save(product));
+        return productMapper.toDto(product);
     }
 }
