@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -98,6 +99,7 @@ public class ProductService {
         return productMapper.toDto(productRepository.save(product));
     }
 
+    @Transactional
     public void delete(Long code) {
         Product product = productRepository
                 .findByCode(code)
@@ -105,6 +107,7 @@ public class ProductService {
         productRepository.delete(product);
     }
 
+    @Transactional
     public ProductDto updateImages(Long code, List<String> newImages) {
 
         Product product = productRepository
@@ -118,5 +121,16 @@ public class ProductService {
 
         return productMapper.toDto(productRepository.save(product));
 
+    }
+
+    @Transactional
+    public ProductDto deleteImages(Long code) {
+        Product product = productRepository
+                .findByCode(code)
+                .orElseThrow(() -> new EntityNotFoundException("Product with code %d not found!".formatted(code)));
+
+        product.setImages(new ArrayList<>());
+
+        return productMapper.toDto(productRepository.save(product));
     }
 }

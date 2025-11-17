@@ -22,7 +22,6 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductDto productDto){
-        log.info("{}", productDto.images());
         return ResponseEntity.ok().body(productService.save(productDto));
     }
 
@@ -64,6 +63,12 @@ public class ProductController {
     public ResponseEntity<ProductDto> updateImages(@PathVariable Long code, @RequestBody List<String> newImages){
         return ResponseEntity.ok().body(productService.updateImages(code, newImages));
     }
+
+    @DeleteMapping("/code/{code}/image")
+    public ResponseEntity<ProductDto> deleteImages(@PathVariable Long code){
+        return ResponseEntity.ok().body(productService.deleteImages(code));
+    }
+
 
     @DeleteMapping("/{code}")
     public ResponseEntity<Void> delete(@PathVariable Long code){
