@@ -15,11 +15,20 @@ import java.util.Objects;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_seq")
+    @SequenceGenerator(name = "category_seq", sequenceName = "category_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "name", nullable = false, length = 45, unique = true)
     private String name;
+
+    @PrePersist
+    @PreUpdate
+    private void preUppercase(){
+        if(!Objects.isNull(name)){
+            name = name.toUpperCase();
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
