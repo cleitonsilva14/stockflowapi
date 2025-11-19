@@ -13,6 +13,8 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -21,6 +23,8 @@ public class StorageService {
 
     private final Path uploadPath;
 
+    private static final Set<String> ALLOWED_IMAGE_TYPES = Set.of();
+
     public String storeFile(MultipartFile file, Long productCode){
 
         if(file.isEmpty()){
@@ -28,11 +32,12 @@ public class StorageService {
         }
 
         String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
-        String extension = getFileExtension(originalFilename).toLowerCase();
+        String extension = getFileExtension(originalFilename).toLowerCase(Locale.ROOT);
 
-        List<String> extensions = List.of("png", "jpg", "webp", "gif");
+        Set<String> extensionsAllowed = Set.of("png", "jpg", "webp", "gif", "svg");
 
-        if(!List.of(extensions).contains(extension)){
+
+        if(!extensionsAllowed.contains(extension)){
             throw new IllegalArgumentException("Invalid image file type");
         }
 

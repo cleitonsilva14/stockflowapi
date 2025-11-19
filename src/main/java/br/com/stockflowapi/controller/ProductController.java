@@ -4,9 +4,14 @@ import br.com.stockflowapi.dto.ProductDto;
 import br.com.stockflowapi.dto.ProductResponseDto;
 import br.com.stockflowapi.projection.ProductCodeProjection;
 import br.com.stockflowapi.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +37,17 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.saveAll(products));
     }
 
-    @PostMapping("/{code}/image")
+
+    @Operation(
+            summary = "Upload de imagem para o produto",
+            description = "Envia uma imagem (MultipartFile) e associa ao produto pelo código informado",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
+                    )
+            )
+    )
+    @PostMapping(value = "/{code}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductResponseDto> uploadImage(@PathVariable(name = "code") Long code, @RequestParam("file")MultipartFile file){
         return ResponseEntity.ok().body(productService.uploadImage(code, file));
     }
