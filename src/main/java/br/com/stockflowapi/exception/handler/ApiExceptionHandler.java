@@ -10,12 +10,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @RestControllerAdvice
@@ -71,6 +71,22 @@ public class ApiExceptionHandler {
                         .build());
     }
 
+    // MaxUploadSizeExceededException
 
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorMessage> maxUploadSizeExceededException(MaxUploadSizeExceededException exception,
+                                                                   HttpServletRequest request){
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .contentType(APPLICATION_JSON)
+                .body(ErrorMessage.builder()
+                        .timestamp(LocalDateTime.now())
+                        .code(BAD_REQUEST.value())
+                        .status(BAD_REQUEST.name())
+                        .method(request.getMethod())
+                        .requestURI(request.getRequestURI())
+                        .message(exception.getMessage())
+                        .build());
+    }
 
 }

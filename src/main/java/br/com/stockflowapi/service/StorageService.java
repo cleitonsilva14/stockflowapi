@@ -30,7 +30,7 @@ public class StorageService {
         String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
         String extension = getFileExtension(originalFilename).toLowerCase();
 
-        List<String> extensions = List.of("png", "jpg", "webp");
+        List<String> extensions = List.of("png", "jpg", "webp", "gif");
 
         if(!List.of(extensions).contains(extension)){
             throw new IllegalArgumentException("Invalid image file type");
