@@ -1,5 +1,6 @@
 package br.com.stockflowapi.service;
 
+import br.com.stockflowapi.config.StorageConfig;
 import br.com.stockflowapi.dto.ProductDto;
 import br.com.stockflowapi.dto.ProductResponseDto;
 import br.com.stockflowapi.exception.custom.EntityNotFoundException;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
-
+    private final StorageService storageService;
 
     @Transactional
     public ProductDto save(ProductDto productDto) {
@@ -66,6 +68,7 @@ public class ProductService {
                 .stream()
                 .map(productMapper::toResponseDto).toList();
     }
+
 
     @Transactional(readOnly = true)
     public ProductResponseDto findByCode(Long code) {
@@ -152,4 +155,19 @@ public class ProductService {
 
         return productMapper.toDto(product);
     }
+
+    @Transactional
+    public ProductResponseDto uploadImage(Long code, MultipartFile file){
+
+        Product product = productRepository
+                .findByCode(code)
+                .orElseThrow(() -> new EntityNotFoundException("Product with code %d not found!".formatted(code)));
+
+        String filename = storageService.storeFile(file, code);
+
+        product.getImages().add("%s%s".formatted("/uploads/product/",filename));
+
+        return productMapper.toResponseDto(product);
+    }
+
 }

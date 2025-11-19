@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +30,11 @@ public class ProductController {
     @PostMapping("/batch")
     public ResponseEntity<List<ProductDto>> saveAll(@Valid @RequestBody List<ProductDto> products){
         return ResponseEntity.ok().body(productService.saveAll(products));
+    }
+
+    @PostMapping("/{code}/image")
+    public ResponseEntity<ProductResponseDto> uploadImage(@PathVariable(name = "code") Long code, @RequestParam("file")MultipartFile file){
+        return ResponseEntity.ok().body(productService.uploadImage(code, file));
     }
 
     @GetMapping
