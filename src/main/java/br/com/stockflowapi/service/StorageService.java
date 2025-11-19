@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +32,7 @@ public class StorageService {
 
         List<String> extensions = List.of("png", "jpg", "webp");
 
-        if(List.of(extensions).contains(extension)){
+        if(!List.of(extensions).contains(extension)){
             throw new IllegalArgumentException("Invalid image file type");
         }
 
@@ -38,7 +40,9 @@ public class StorageService {
             throw new IllegalArgumentException("Invalid file path");
         }
 
-        String filename = "%d%s.%s".formatted(productCode, UUID.randomUUID(), extension);
+        String filename = "%d-%s-%s.%s".formatted(productCode,getCurrentDatetime(),UUID.randomUUID(), extension);
+
+        //String filename = "%d%s.%s".formatted(productCode, UUID.randomUUID(), extension);
 
         try {
             Path target = uploadPath.resolve(filename);
@@ -52,6 +56,12 @@ public class StorageService {
 
     private String getFileExtension(String filename){
         return filename.substring(filename.lastIndexOf(".") + 1);
+    }
+
+    private String getCurrentDatetime(){
+
+        String PATTERN = "yyyyMMddHHmmssSSS";
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(PATTERN));
     }
 
 }
