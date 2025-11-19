@@ -32,7 +32,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDto>> findAll(){
+    public ResponseEntity<List<ProductResponseDto>> findAll(){
         return ResponseEntity.ok().body(productService.findAll());
     }
 

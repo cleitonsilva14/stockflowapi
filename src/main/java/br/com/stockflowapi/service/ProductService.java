@@ -60,11 +60,11 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDto> findAll() {
+    public List<ProductResponseDto> findAll() {
         return productRepository
                 .findAll()
                 .stream()
-                .map(productMapper::toDto).toList();
+                .map(productMapper::toResponseDto).toList();
     }
 
     @Transactional(readOnly = true)
