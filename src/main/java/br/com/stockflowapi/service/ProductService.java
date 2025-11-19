@@ -1,6 +1,7 @@
 package br.com.stockflowapi.service;
 
 import br.com.stockflowapi.dto.ProductDto;
+import br.com.stockflowapi.dto.ProductResponseDto;
 import br.com.stockflowapi.exception.custom.EntityNotFoundException;
 import br.com.stockflowapi.exception.custom.ProductCodeUniqueViolation;
 import br.com.stockflowapi.mapper.ProductMapper;
@@ -67,7 +68,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ProductDto findByCode(Long code) {
+    public ProductResponseDto findByCode(Long code) {
 
         Product product = productRepository.findByCode(code)
 //                .findByCodeAndCategory(code)
@@ -75,7 +76,7 @@ public class ProductService {
 
         log.info(product.getCategory().getName());
 
-        return productMapper.toDto(product);
+        return productMapper.toResponseDto(product);
 
     }
 
@@ -103,11 +104,18 @@ public class ProductService {
                 .findByCode(code)
                 .orElseThrow(() -> new EntityNotFoundException("Product code %d not found!".formatted(code)));
 
+        Long categoryId = productDto.categoryId();
+
+        Category category = categoryRepository
+                .findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("Category id: %d not found!".formatted(categoryId)));
+
         product.setCode(product.getCode());
         product.setName(productDto.name());
         product.setDescription(productDto.description());
         product.setPrice(productDto.price());
         product.setImages(productDto.images());
+        product.setCategory(category);
 
 
         return productMapper.toDto(productRepository.save(product));

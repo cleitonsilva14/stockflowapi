@@ -1,6 +1,7 @@
 package br.com.stockflowapi.controller;
 
 import br.com.stockflowapi.dto.ProductDto;
+import br.com.stockflowapi.dto.ProductResponseDto;
 import br.com.stockflowapi.projection.ProductCodeProjection;
 import br.com.stockflowapi.service.ProductService;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class ProductController {
     }
 
     @GetMapping("/code/{code}")
-    public ResponseEntity<ProductDto> findByCode(@PathVariable(name = "code") Long code){
+    public ResponseEntity<ProductResponseDto> findByCode(@PathVariable(name = "code") Long code){
         return ResponseEntity.ok().body(productService.findByCode(code));
     }
 

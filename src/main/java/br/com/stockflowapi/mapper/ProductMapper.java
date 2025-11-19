@@ -1,6 +1,7 @@
 package br.com.stockflowapi.mapper;
 
 import br.com.stockflowapi.dto.ProductDto;
+import br.com.stockflowapi.dto.ProductResponseDto;
 import br.com.stockflowapi.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,5 +19,10 @@ public interface ProductMapper {
     @Mapping(source = "category.id", target = "categoryId")
     ProductDto toDto(Product product);
 
+    @Mapping(source = "category", target = "category")
+    ProductResponseDto toResponseDto(Product product);
+
     Product toEntity(ProductDto productDto);
+
+
 }

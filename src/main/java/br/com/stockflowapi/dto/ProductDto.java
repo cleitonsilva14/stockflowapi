@@ -17,6 +17,6 @@ public record ProductDto(
         @NotBlank @Schema(example = "Product description") String description,
         @DecimalMin("0.01") @Schema(example = "499.99") BigDecimal price,
         @ArraySchema(schema = @Schema(example = "https://storage.com/image1.jpg")) List<String> images,
-        @NotBlank @Schema(example = "1") Long categoryId
+        @NotNull @Schema(example = "1") Long categoryId
 ) {
 }
