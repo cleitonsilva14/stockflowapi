@@ -134,6 +134,9 @@ public class ProductService {
         Product product = productRepository
                 .findByCode(code)
                 .orElseThrow(() -> new EntityNotFoundException("Product with code %d not found!".formatted(code)));
+
+        deleteImages(product.getCode());
+
         productRepository.delete(product);
     }
 
