@@ -1,6 +1,5 @@
 package br.com.stockflowapi.service;
 
-import br.com.stockflowapi.config.StorageConfig;
 import br.com.stockflowapi.dto.ProductDto;
 import br.com.stockflowapi.dto.ProductResponseDto;
 import br.com.stockflowapi.exception.custom.EntityNotFoundException;
@@ -19,12 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -156,6 +152,7 @@ public class ProductService {
 
     @Transactional
     public ProductDto deleteImages(Long code) {
+
         Product product = productRepository
                 .findByCode(code)
                 .orElseThrow(() -> new EntityNotFoundException("Product with code %d not found!".formatted(code)));
