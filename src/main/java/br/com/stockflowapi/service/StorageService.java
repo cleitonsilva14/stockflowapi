@@ -2,13 +2,16 @@ package br.com.stockflowapi.service;
 
 import ch.qos.logback.core.util.StringUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +23,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class StorageService {
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
 
     private final Path uploadPath;
 
@@ -59,6 +65,17 @@ public class StorageService {
 
     }
 
+    public void deleteImageFromDisk(String filename){
+        Path path = Paths.get(uploadDir, filename);
+
+        try {
+            Files.deleteIfExists(path);
+        }catch (IOException ex){
+            throw new RuntimeException("Failed to delete file: " + filename, ex);
+        }
+    }
+
+
     private String getFileExtension(String filename){
         return filename.substring(filename.lastIndexOf(".") + 1);
     }
@@ -67,6 +84,10 @@ public class StorageService {
 
         String PATTERN = "yyyyMMddHHmmssSSS";
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(PATTERN));
+    }
+
+    public String extractFileName(String url){
+        return Paths.get(URI.create(url).getPath()).getFileName().toString();
     }
 
 }

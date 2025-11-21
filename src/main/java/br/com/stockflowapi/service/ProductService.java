@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -81,6 +82,11 @@ public class ProductService {
                 .orElseThrow(() -> new EntityNotFoundException("Product code %d not found!".formatted(code)));
 
         log.info(product.getCategory().getName());
+
+        product.getImages().forEach(
+            System.out::println
+        );
+
 
         return productMapper.toResponseDto(product);
 
@@ -154,7 +160,15 @@ public class ProductService {
                 .findByCode(code)
                 .orElseThrow(() -> new EntityNotFoundException("Product with code %d not found!".formatted(code)));
 
-        product.getImages().clear();
+
+        for (String urlImage : product.getImages()){
+            log.info("{}", urlImage);
+            String file = storageService.extractFileName(urlImage);
+            storageService.deleteImageFromDisk(file);
+
+        }
+
+         product.getImages().clear();
 
         return productMapper.toDto(product);
     }
