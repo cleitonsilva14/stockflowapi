@@ -77,12 +77,12 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorMessage> maxUploadSizeExceededException(MaxUploadSizeExceededException exception,
                                                                    HttpServletRequest request){
         return ResponseEntity
-                .status(BAD_REQUEST)
+                .status(PAYLOAD_TOO_LARGE)
                 .contentType(APPLICATION_JSON)
                 .body(ErrorMessage.builder()
                         .timestamp(LocalDateTime.now())
-                        .code(BAD_REQUEST.value())
-                        .status(BAD_REQUEST.name())
+                        .code(PAYLOAD_TOO_LARGE.value())
+                        .status(PAYLOAD_TOO_LARGE.name())
                         .method(request.getMethod())
                         .requestURI(request.getRequestURI())
                         .message(exception.getMessage())
