@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
     private final StorageService storageService;
+
+    private static final String PATH_UPLOAD = "/uploads/product/";
 
     @Transactional
     public ProductDto save(ProductDto productDto) {
@@ -165,7 +168,14 @@ public class ProductService {
 
         String filename = storageService.storeFile(file, code);
 
-        product.getImages().add("%s%s".formatted("/uploads/product/",filename));
+        String imageUrl = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path(PATH_UPLOAD)
+                .path(filename)
+                .toUriString();
+
+        //product.getImages().add("%s%s".formatted(PATH_UPLOAD,filename));
+        product.getImages().add("%s".formatted(imageUrl));
 
         return productMapper.toResponseDto(product);
     }
