@@ -71,6 +71,10 @@ public class ProductService {
                 .category(category)
                 .build();
 
+        images.forEach((f) -> {
+            System.out.println(f.toString());
+        });
+
 
         log.info(">>>>>>>>>>>>>>>>>{}", product);
 

@@ -7,7 +7,11 @@ import br.com.stockflowapi.model.Product;
 import br.com.stockflowapi.projection.ProductCodeProjection;
 import br.com.stockflowapi.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +36,35 @@ public class ProductController {
 //        return ResponseEntity.ok().body(productService.save(productDto));
 //    }
 
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public void saveV2(@Valid @RequestPart("product") ProductRequestDto requestDto,
-                                                     @RequestPart("images") List<MultipartFile> images){
-        productService.saveProduct(requestDto, images);
-    }
+//    @PostMapping
+        @Operation(summary = "Create product with images")
+        @ApiResponses(value = {
+                @ApiResponse(responseCode = "200", description = "Product saved")
+        })
+        @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+        public void saveV2(
+                @Parameter(
+                        description = "JSON com dados do produto",
+                        required = true,
+                        content = @Content(
+                                mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                schema = @Schema(implementation = ProductRequestDto.class)
+                        )
+                )
+                @RequestPart("product") ProductRequestDto requestDto,
+
+                @Parameter(
+                        description = "Lista de imagens do produto",
+                        required = false,
+                        content = @Content(
+                                mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
+                        )
+                )
+                @RequestPart("images") List<MultipartFile> images
+        ) {
+            productService.saveProduct(requestDto, images);
+        }
+
 
     @PostMapping("/batch")
     public ResponseEntity<List<ProductDto>> saveAll(@Valid @RequestBody List<ProductDto> products){
