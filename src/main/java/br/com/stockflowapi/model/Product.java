@@ -1,5 +1,6 @@
 package br.com.stockflowapi.model;
 
+import br.com.stockflowapi.audit.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_product")
-public class Product {
+public class Product extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,7 +34,7 @@ public class Product {
 
 
     @ElementCollection//(fetch = FetchType.EAGER)
-    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+    @CollectionTable(name = "tb_product_images", joinColumns = @JoinColumn(name = "product_id"))
     private List<String> images = new ArrayList<>();
 
 
