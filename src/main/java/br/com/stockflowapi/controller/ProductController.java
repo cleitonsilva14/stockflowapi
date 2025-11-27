@@ -1,7 +1,9 @@
 package br.com.stockflowapi.controller;
 
 import br.com.stockflowapi.dto.ProductDto;
+import br.com.stockflowapi.dto.ProductRequestDto;
 import br.com.stockflowapi.dto.ProductResponseDto;
+import br.com.stockflowapi.model.Product;
 import br.com.stockflowapi.projection.ProductCodeProjection;
 import br.com.stockflowapi.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,9 +27,15 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping
-    public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductDto productDto){
-        return ResponseEntity.ok().body(productService.save(productDto));
+    //@PostMapping
+//    public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductDto productDto){
+//        return ResponseEntity.ok().body(productService.save(productDto));
+//    }
+
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void saveV2(@Valid @RequestPart("product") ProductRequestDto requestDto,
+                                                     @RequestPart("images") List<MultipartFile> images){
+        productService.saveProduct(requestDto, images);
     }
 
     @PostMapping("/batch")

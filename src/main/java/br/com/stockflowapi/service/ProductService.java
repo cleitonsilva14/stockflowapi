@@ -1,6 +1,7 @@
 package br.com.stockflowapi.service;
 
 import br.com.stockflowapi.dto.ProductDto;
+import br.com.stockflowapi.dto.ProductRequestDto;
 import br.com.stockflowapi.dto.ProductResponseDto;
 import br.com.stockflowapi.exception.custom.EntityNotFoundException;
 import br.com.stockflowapi.exception.custom.ProductCodeUniqueViolation;
@@ -50,6 +51,28 @@ public class ProductService {
         }catch (ProductCodeUniqueViolation exception){
             throw new ProductCodeUniqueViolation("Product code %d already exists!".formatted(product.getCode()));
         }
+
+    }
+
+    public void saveProduct(ProductRequestDto requestDto,
+                                          List<MultipartFile> images) {
+
+        Category category = categoryRepository
+                .findById(requestDto.categoryId())
+                .orElseThrow(() -> new
+                        EntityNotFoundException("Category id: %d not found!".formatted(requestDto.categoryId())));
+
+
+        Product product = Product.builder()
+                .code(requestDto.code())
+                .name(requestDto.name())
+                .description(requestDto.description())
+                .price(requestDto.price())
+                .category(category)
+                .build();
+
+
+        log.info(">>>>>>>>>>>>>>>>>{}", product);
 
     }
 
@@ -193,5 +216,6 @@ public class ProductService {
 
         return productMapper.toResponseDto(product);
     }
+
 
 }
